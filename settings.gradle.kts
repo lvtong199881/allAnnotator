@@ -16,3 +16,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "allAnnotator"
 include(":init-annotator")
+include(":router-annotation")
+include(":router-annotator")

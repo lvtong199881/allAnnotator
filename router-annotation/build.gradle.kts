@@ -1,5 +1,5 @@
 plugins {
-    id("java-library")
+    id("org.jetbrains.kotlin.jvm")
     id("maven-publish")
 }
 
@@ -13,20 +13,18 @@ java {
 
 dependencies {
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib:2.1.20")
-    compileOnly("com.google.auto.service:auto-service-annotations:1.1.1")
-    annotationProcessor("com.google.auto.service:auto-service:1.1.1")
 }
 
 publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "com.mohanlv"
-            artifactId = "init-annotator"
+            artifactId = "router-annotation"
             version = "0.0.4"
             from(components["java"])
             pom {
-                name.set("init-annotator")
-                description.set("KAPT processor for @InitTask annotation")
+                name.set("router-annotation")
+                description.set("@Route annotation for router")
                 licenses {
                     license {
                         name.set("MIT")
@@ -37,6 +35,7 @@ publishing {
         }
     }
     repositories {
+        mavenLocal()
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/lvtong199881/allAnnotator")

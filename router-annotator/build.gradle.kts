@@ -11,7 +11,13 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
+repositories {
+    mavenCentral()
+    google()
+}
+
 dependencies {
+    implementation(project(":router-annotation"))
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib:2.1.20")
     compileOnly("com.google.auto.service:auto-service-annotations:1.1.1")
     annotationProcessor("com.google.auto.service:auto-service:1.1.1")
@@ -21,12 +27,12 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "com.mohanlv"
-            artifactId = "init-annotator"
+            artifactId = "router-annotator"
             version = "0.0.4"
             from(components["java"])
             pom {
-                name.set("init-annotator")
-                description.set("KAPT processor for @InitTask annotation")
+                name.set("router-annotator")
+                description.set("KAPT processor for @Route annotation")
                 licenses {
                     license {
                         name.set("MIT")
@@ -37,6 +43,7 @@ publishing {
         }
     }
     repositories {
+        mavenLocal()
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/lvtong199881/allAnnotator")
