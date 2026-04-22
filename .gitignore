@@ -1,0 +1,6 @@
+# 项目根目录
+/build
+/.gradle
+/.idea
+*.iml
+local.properties
