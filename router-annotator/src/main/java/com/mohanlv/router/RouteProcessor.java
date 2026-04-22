@@ -94,6 +94,16 @@ public class RouteProcessor extends AbstractProcessor {
                 writer.write(buildCollectorCode(collectorClassName, routes));
             }
             
+            // 生成 META-INF/services 文件供 ServiceLoader 加载
+            FileObject serviceFile = processingEnv.getFiler().createResource(
+                StandardLocation.CLASS_OUTPUT,
+                "",
+                "META-INF/services/com.mohanlv.router.RouteCollector"
+            );
+            try (Writer writer = serviceFile.openWriter()) {
+                writer.write(qualifiedCollectorName);
+            }
+            
             processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Generated " + qualifiedCollectorName);
         } catch (Exception e) {
             processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Failed to generate collector: " + e.getMessage());
@@ -104,13 +114,17 @@ public class RouteProcessor extends AbstractProcessor {
         StringBuilder sb = new StringBuilder();
         
         sb.append("package ").append(packageName).append(";\n\n");
+        sb.append("import com.mohanlv.router.RouteCollector;\n\n");
+        sb.append("import java.util.Map;\n");
+        sb.append("import java.util.HashMap;\n\n");
         sb.append("/**\n");
-        sb.append(" * 自动生成的路由注册类\n");
+        sb.append(" * 自动生成的路由收集器\n");
         sb.append(" * 由 RouteProcessor KAPT 生成\n");
-        sb.append(" * 在模块初始化时调用 register() 方法注册路由\n");
         sb.append(" */\n");
-        sb.append("public class ").append(className).append(" {\n");
-        sb.append("    public static void register(com.mohanlv.router.RouterManager manager) {\n");
+        sb.append("public class ").append(className).append(" implements RouteCollector {\n");
+        sb.append("    @Override\n");
+        sb.append("    public Map<String, String> getRoutes() {\n");
+        sb.append("        Map<String, String> routes = new HashMap<>();\n");
         
         List<? extends Element> routeList = new ArrayList<>(routes);
         for (Element element : routeList) {
@@ -131,10 +145,11 @@ public class RouteProcessor extends AbstractProcessor {
                 continue;
             }
             
-            sb.append("        manager.registerInternal(\"").append(extractPath(path)).append("\", ")
-               .append(qualifiedName).append(".class);\n");
+            sb.append("        routes.put(\"").append(extractPath(path)).append("\", \"")
+               .append(qualifiedName).append("\");\n");
         }
         
+        sb.append("        return routes;\n");
         sb.append("    }\n");
         sb.append("}\n");
         

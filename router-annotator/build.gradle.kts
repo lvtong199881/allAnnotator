@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.mohanlv"
-version = "0.0.4"
+version = "0.0.6"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -28,7 +28,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.mohanlv"
             artifactId = "router-annotator"
-            version = "0.0.4"
+            version = "0.0.6"
             from(components["java"])
             pom {
                 name.set("router-annotator")
