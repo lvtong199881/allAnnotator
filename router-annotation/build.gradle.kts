@@ -4,7 +4,6 @@ plugins {
 }
 
 group = "com.mohanlv"
-version = "0.0.6"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -20,7 +19,8 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.mohanlv"
             artifactId = "router-annotation"
-            version = "0.0.6"
+            val moduleVersion = project.findProperty("$artifactId.version")?.toString() ?: "0.0.1"
+            version = moduleVersion
             from(components["java"])
             pom {
                 name.set("router-annotation")
@@ -31,17 +31,6 @@ publishing {
                         url.set("https://opensource.org/licenses/MIT")
                     }
                 }
-            }
-        }
-    }
-    repositories {
-        mavenLocal()
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/lvtong199881/allAnnotator")
-            credentials {
-                username = "lvtong199881"
-                password = "\u0067hp_K4MX0aj0qJhu88vPpl3CWwgfzoRwUK4Lu4Fn"
             }
         }
     }

@@ -4,7 +4,6 @@ plugins {
 }
 
 group = "com.mohanlv"
-version = "0.0.6"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -22,7 +21,8 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.mohanlv"
             artifactId = "init-annotator"
-            version = "0.0.6"
+            val moduleVersion = project.findProperty("$artifactId.version")?.toString() ?: "1.0.0"
+            version = moduleVersion
             from(components["java"])
             pom {
                 name.set("init-annotator")
@@ -33,16 +33,6 @@ publishing {
                         url.set("https://opensource.org/licenses/MIT")
                     }
                 }
-            }
-        }
-    }
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/lvtong199881/allAnnotator")
-            credentials {
-                username = "lvtong199881"
-                password = "\u0067hp_K4MX0aj0qJhu88vPpl3CWwgfzoRwUK4Lu4Fn"
             }
         }
     }
